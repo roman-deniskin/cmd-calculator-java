@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Expression {
 
@@ -51,10 +52,10 @@ public class Expression {
                         hasOperation = true;
                     }
                 }
-                for(String romanDigit: ROMAN_DIGITS) {
-                    if (sign.equals(romanDigit)) {
-                        exprHasRomanDigit = true;
-                    }
+                if (Arrays.asList(ROMAN_DIGITS).contains(sign)) {
+                    exprHasRomanDigit = true;
+                    this.isRomanExpr = true;
+                    this.args.add(this.romanToArabic(sign));
                 }
             }
             if (exprHasArabicDigit && exprHasRomanDigit) {
@@ -72,7 +73,11 @@ public class Expression {
             }
 
             Calculator calc = new Calculator(argsMapper, operator);
-            System.out.println(this.expr + " = " + calc.process());
+            if (this.isRomanExpr) {
+                System.out.println(this.expr + " = " + this.arabicToRoman(Math.round(calc.process())));
+            } else {
+                System.out.println(this.expr + " = " + Math.round(calc.process()));
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -125,5 +130,86 @@ public class Expression {
             }
         }
         return true;
+    }
+
+    public int romanToArabic(String number) {
+        // Можно, конечно же, сделать это более изящно через Map, но пока более простой вариант
+        int returnedVal = -1;
+        switch (number) {
+            case "I":
+                returnedVal = 1;
+                break;
+            case "II":
+                returnedVal = 2;
+                break;
+            case "III":
+                returnedVal = 3;
+                break;
+            case "IV":
+                returnedVal = 4;
+                break;
+            case "V":
+                returnedVal = 5;
+                break;
+            case "VI":
+                returnedVal = 6;
+                break;
+            case "VII":
+                returnedVal = 7;
+                break;
+            case "VIII":
+                returnedVal = 8;
+                break;
+            case "IX":
+                returnedVal = 9;
+                break;
+            case "X":
+                returnedVal = 10;
+                break;
+        }
+        return returnedVal;
+    }
+
+    public String arabicToRoman(int number) {
+        if (number < 1 || number > 3999)
+            return "Римское число больше 100";
+        String romanDigit = "";
+        while (number >= 100) {
+            romanDigit += "C";
+            number -= 100;
+        }
+        while (number >= 90) {
+            romanDigit += "XC";
+            number -= 90;
+        }
+        while (number >= 50) {
+            romanDigit += "L";
+            number -= 50;
+        }
+        while (number >= 40) {
+            romanDigit += "XL";
+            number -= 40;
+        }
+        while (number >= 10) {
+            romanDigit += "X";
+            number -= 10;
+        }
+        while (number >= 9) {
+            romanDigit += "IX";
+            number -= 9;
+        }
+        while (number >= 5) {
+            romanDigit += "V";
+            number -= 5;
+        }
+        while (number >= 4) {
+            romanDigit += "IV";
+            number -= 4;
+        }
+        while (number >= 1) {
+            romanDigit += "I";
+            number -= 1;
+        }
+        return romanDigit;
     }
 }
