@@ -19,7 +19,7 @@ public class Expression {
 
     /**
      * Заданны ограничения из задачи, инициализируется вызов калькулятора
-     * @param expr
+     * @param String expr
      */
     public Expression(String expr) {
         this.expr = expr;
@@ -61,9 +61,6 @@ public class Expression {
             if (exprHasArabicDigit && exprHasRomanDigit) {
                 throw new Exception("В выражении не должно быть римских и арабских цифр одновременно.");
             }
-            if (isSubtraction && exprHasRomanDigit) {
-                throw new Exception("В римской системе нет операций вычитания");
-            }
             if (!hasOperation) {
                 throw new Exception("В выражении должна быть математическая операция");
             }
@@ -80,7 +77,6 @@ public class Expression {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -94,8 +90,8 @@ public class Expression {
 
     /**
      * Парсинг введённого значения
-     * @param expr
-     * @return
+     * @param String expr
+     * @return String
      */
     public String[] parse(String expr) {
         return expr.split("((?<=[\\+|\\*|\\-|/])|(?=[\\+|\\*|\\-|/]))");
@@ -171,7 +167,9 @@ public class Expression {
     }
 
     public String arabicToRoman(int number) {
-        if (number < 1 || number > 3999)
+        if (number < 1)
+            return "В Римской системе нет отрицательных чисел и нуля";
+        if (number > 100)
             return "Римское число больше 100";
         String romanDigit = "";
         while (number >= 100) {

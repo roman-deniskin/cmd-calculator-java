@@ -31,7 +31,7 @@ public class Calculator {
                     if (this.args[0] == 0) {
                         throw new Exception("Деление на 0 не возможно");
                     }
-                    this.result = (float)this.args[0] / (float)this.args[1];
+                    this.result =  Math.floorDiv(this.args[0], this.args[1]);
                     break;
             }
         } catch (Exception e) {
